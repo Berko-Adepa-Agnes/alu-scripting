@@ -1,1 +1,2 @@
-b0VIM 8.1
+#!/usr/bin/env ruby
+puts ARGV[0].scan(/School/)

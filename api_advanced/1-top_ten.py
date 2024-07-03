@@ -1,37 +1,25 @@
 #!/usr/bin/python3
-"""
-Function that queries the Reddit API and prints
-the top ten hot posts of a subreddit
-"""
+''' Test request to parse API's
+'''
+import csv
 import requests
 import sys
 
-
-def top_ten(subreddit):
-    """ Queries to Reddit API """
-    u_agent = 'Mozilla/5.0'
-
-    headers = {
-        'User-Agent': u_agent
-    }
-
-    params = {
-        'limit': 10
-    }
-
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    res = requests.get(url,
-                       headers=headers,
-                       params=params,
-                       allow_redirects=False)
-    if res.status_code != 200:
-        print(None)
-        return
-    dic = res.json()
-    hot_posts = dic['data']['children']
-    if len(hot_posts) is 0:
-        print(None)
-    else:
-        for post in hot_posts:
-            print(post['data']['title'])
-            
+if __name__ == "__main__":
+    if len(sys.argv) > 1 and sys.argv[1].isdigit():
+        api_endpoint = "https://jsonplaceholder.typicode.com"
+        user_id = sys.argv[1]
+        user_data = requests.get(api_endpoint + "/users/" + user_id).json()
+        username = user_data.get('username')
+        todo_data = \
+            requests.get(api_endpoint + "/users/" + user_id + "/todos").\
+            json()
+        with open("{}.csv".format(user_id), 'w') as csv_file:
+            for task in todo_data:
+                csv_file.write('"{}","{}","{}","{}"\n'.format(
+                    user_id,
+                    username,
+                    task.get('completed'),
+                    task.get('title')
+                ))
+                

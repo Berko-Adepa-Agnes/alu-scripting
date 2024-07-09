@@ -34,3 +34,4 @@ def count_words(subreddit, word_list=[], hot_list=[], after=""):
                 print("{}: {}".format(key, value))
     except Exception:
         return None
+    
